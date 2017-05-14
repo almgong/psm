@@ -16,7 +16,8 @@
  **/
  class HomeScreen extends React.Component {
  	static navigationOptions = {
- 		title: 'Welcome'
+ 		title: 'Welcome',
+ 		drawerLabel: 'Welcome'
  	};
 
  	constructor(props) {

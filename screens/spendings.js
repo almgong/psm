@@ -13,7 +13,8 @@ import PsmStorage from '../modules/storage';
 
 class SpendingsScreen extends React.Component {
 	static navigationOptions = {
- 		title: 'Spending History'
+ 		title: 'Spending History',
+ 		drawerLabel: 'Spending History'
  	};
 
 	constructor(props) {

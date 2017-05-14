@@ -5,15 +5,27 @@
 import {
   AppRegistry
 } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { 
+	StackNavigator, 
+	DrawerNavigator 
+} from 'react-navigation';
 
 // screens
 import HomeScreen from './screens/home';
 import SpendingsScreen from './screens/spendings';
 
-const PersonalSpendingManager = StackNavigator({
-	Home: { screen: HomeScreen },
-	Spendings: { screen: SpendingsScreen }
+const stackNavigator = StackNavigator({
+	Home: {
+		screen: HomeScreen
+	},
+	SpendingHistory: {
+		screen: SpendingsScreen
+	}
+});
+
+const PersonalSpendingManager = DrawerNavigator({
+	Home: { screen: stackNavigator },
+	SpendingHistory: { screen: SpendingsScreen }
 })
 
 AppRegistry.registerComponent('PersonalSpendingManager', 

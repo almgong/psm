@@ -97,7 +97,6 @@ class LogSpendingForm extends React.Component {
 						self._storeExpenditureHelper(amountValueAsNum, categoryId);
 
 						// update UI category list and in-memory hash to possess the newly created category
-						alert(JSON.stringify(category))
 						self.state.categoryTitles.push(category);
 						self.state.categoryTitles.sort();
 

@@ -26,6 +26,13 @@ var styles = StyleSheet.create({
 	},
 	fontColorLightGreen: {
 		color: lightGreen
+	},
+	textInput: {
+		width: 100, 
+		height: 40, 
+		borderColor: 'gray', 
+		borderWidth: 2, 
+		padding: 2
 	}
 });
 

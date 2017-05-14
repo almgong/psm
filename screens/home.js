@@ -1,12 +1,14 @@
  import React from "react";
  import {
+ 	ActivityIndicator,
  	Button,
  	Text,
  	View
  } from "react-native";
 
  // subcomponents
- import AmountForm from '../subcomponents/form/amount_form';
+ import LogSpendingForm from '../subcomponents/form/log_spending_form';
+ import PsmStorage from '../modules/storage';
 
  /**
   * Home screen of the app. Contains at minimum a form to enter
@@ -16,6 +18,18 @@
  	static navigationOptions = {
  		title: 'Welcome'
  	};
+
+ 	constructor(props) {
+ 		super(props);
+
+ 		this.state = { loadingData: true };
+
+ 		let self = this;
+ 		PsmStorage.initialize(() => {
+ 			// loading data complete!
+			self.setState({ loadingData: false });
+		});
+ 	}
 
  	// returns a time-dependent greeting
  	getGreeting() {
@@ -36,22 +50,40 @@
 
  	render() {
  		return(
- 			<View style={{
+	      <View style={{
  					flex: 1, 
  					flexDirection: 'column',
  					alignItems: 'center'
 	 			}}>
-	 			<Text style={{
-	 				fontSize: 20,
-	 				marginBottom: 15
-	 			}}>Personal Spending Manager</Text>
- 				<Text>{ this.getGreeting() }</Text>
- 				<AmountForm 
- 					textInputPlaceholder='e.g. 20.50' 
- 					buttonTitle='Save'
- 					buttonAccessibilityLabel='Submit an expenditure cost'>
- 				</AmountForm>
- 			</View>
+	 			{ (this.state.loadingData) ? 
+	 				<View style={{flex: 1}}>
+						<ActivityIndicator
+	        	animating={true}
+	        	size='large'
+	      		/>
+	      		<Text>Loading your data...</Text>
+	      	</View>  : 
+
+		      <View style={{alignItems:'center', flex: 1}}>
+			      <Text style={{
+			 				fontSize: 20,
+			 				marginBottom: 15
+			 			}}>Personal Spending Manager</Text>
+		 				<Text>{ this.getGreeting() }</Text>
+		 				<LogSpendingForm 
+		 					amountInputPlaceholder='e.g. 5.50'
+		 					categoryInputPlaceholder='e.g. Food' />
+
+		 				<Text 
+		 					style={{color: 'blue'}} 
+		 					onPress={(() => { 
+		 						this.props.navigation.navigate('Spendings');
+		 					})}>
+		 					Check your spendings (temp)
+		 				</Text>
+	 				</View>
+ 				}
+ 				</View>
  		);
  	}
  }

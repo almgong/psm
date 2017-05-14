@@ -9,9 +9,11 @@ import { StackNavigator } from 'react-navigation';
 
 // screens
 import HomeScreen from './screens/home';
+import SpendingsScreen from './screens/spendings';
 
 const PersonalSpendingManager = StackNavigator({
-	Home: { screen: HomeScreen }
+	Home: { screen: HomeScreen },
+	Spendings: { screen: SpendingsScreen }
 })
 
 AppRegistry.registerComponent('PersonalSpendingManager', 

@@ -27,6 +27,18 @@ var styles = StyleSheet.create({
 	fontColorLightGreen: {
 		color: lightGreen
 	},
+	header1: {
+		fontSize: 26,
+		fontWeight: '500'
+	},
+	header2: {
+		fontSize: 20,
+		fontWeight: '400'
+	},
+	header3: {
+		fontSize: 16,
+		fontWeight: '300'
+	},
 	textInput: {
 		width: 100, 
 		height: 40, 

@@ -73,14 +73,6 @@
 		 				<LogSpendingForm 
 		 					amountInputPlaceholder='e.g. 5.50'
 		 					categoryInputPlaceholder='e.g. Food' />
-
-		 				<Text 
-		 					style={{color: 'blue'}} 
-		 					onPress={(() => { 
-		 						this.props.navigation.navigate('Spendings');
-		 					})}>
-		 					Check your spendings (temp)
-		 				</Text>
 	 				</View>
  				}
  				</View>

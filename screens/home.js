@@ -71,7 +71,8 @@
 			 				marginBottom: 15
 			 			}}>Personal Spending Manager</Text>
 		 				<Text>{ this.getGreeting() }</Text>
-		 				<LogSpendingForm 
+		 				<LogSpendingForm
+							formWidth={200} 
 		 					amountInputPlaceholder='e.g. 5.50'
 		 					categoryInputPlaceholder='e.g. Food' />
 	 				</View>

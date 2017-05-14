@@ -147,7 +147,8 @@ class LogSpendingForm extends React.Component {
 			<View style={{
 				flex: 1, 
 				flexDirection: 'column',
-				paddingVertical: 10
+				paddingVertical: 10,
+				width: this.props.formWidth
 			}}>
 
 				<View style={{
@@ -155,10 +156,11 @@ class LogSpendingForm extends React.Component {
 				}}>
 					<Text>Amount</Text>
 						<TextInput 
-							style={styles.textInput}
+							style={[styles.textInput, {width: this.props.formWidth}]}
 							keyboardType='numeric'
 							placeholder={this.props.amountInputPlaceholder}
-							onChangeText={this.onAmountTextChanged.bind(this)} />
+							onChangeText={this.onAmountTextChanged.bind(this)}
+							value={this.state.amountInputValue} />
 					<Text style={[styles.error]}>{this.state.amountErrMsg}</Text>
 				</View>
 
@@ -167,7 +169,7 @@ class LogSpendingForm extends React.Component {
 				}}>
 					<Text>Category</Text>
 					<TextInput 
-						style={styles.textInput}
+						style={[styles.textInput, {width: this.props.formWidth}]}
 						placeholder={this.props.categoryInputPlaceholder} 
 						onChangeText={this.onCategoryTextCHanged.bind(this)}
 						value={this.state.categoryInputValue} />

@@ -83,7 +83,9 @@ class LogSpendingForm extends React.Component {
 	logSpending() {
 		let currState = this.state;
 		let amountValueAsNum = +currState.amountInputValue;
+		let category = currState.categoryInputValue;
 		let self = this;
+
 		if (amountValueAsNum > 0) {
 			// get category id
 			if (this.state.categoryId) {
@@ -92,12 +94,14 @@ class LogSpendingForm extends React.Component {
 				// else the category is a new one and not blank, store first
 				PsmStorage.storeCategory(this.state.categoryInputValue, (err, categoryId) => {
 					if (!err) {
-						this._storeExpenditureHelper(amountValueAsNum, categoryId);
+						self._storeExpenditureHelper(amountValueAsNum, categoryId);
 
-						// update UI category list and in-memory hash
-						self.state.categoryTitles.push(this.state.categoryInputValue);
-						self.setState({ categoryTitles: this.state.categoryTitles });
+						// update UI category list and in-memory hash to possess the newly created category
+						alert(JSON.stringify(category))
+						self.state.categoryTitles.push(category);
+						self.state.categoryTitles.sort();
 
+						self.setState({ categoryTitles: self.state.categoryTitles });
 						self._categoriesInverted[this.state.categoryInputValue] = categoryId;
 					} else {
 						// this may not work as intended since it is async
@@ -107,7 +111,6 @@ class LogSpendingForm extends React.Component {
 			} else {
 				currState.categoryErrMsg = 'Please enter or select a category.';
 			}
-		
 		} else {
 			currState.amountErrMsg = 'Please enter a value greater than 0.';
 			currState.showLogResultMessage = false;

@@ -82,7 +82,7 @@ class SpendingsScreen extends React.Component {
 						<View key={tuple[0]} style={{flexDirection: 'row', paddingVertical: 5}}>
 							<Text style={[{fontSize: 16}, styles.fontColorBlue]}>{tuple[0] + ': '}</Text>
 							<Text>{tuple[1] + '%' }</Text>
-							<Text style={{color:'red'}}>{'($' + amountByCategory[tuple[0]] + ')'}</Text>
+							<Text style={{color:'red'}}>{'($' + amountByCategory[tuple[0]].toFixed(2) + ')'}</Text>
 						</View>
 					);
 				})}

@@ -195,7 +195,7 @@ class LogSpendingForm extends React.Component {
 				<Button 
 		 			onPress={this.logSpending.bind(this)}
 		 			title='Save' 
-		 			accessibilityLabel='' />
+		 			accessibilityLabel='Save' />
 
 	 			{(this.state.showLogResultMessage) ? (<Text>{this.state.logResultMessage}</Text>) : null}
 			</View>

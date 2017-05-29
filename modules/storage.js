@@ -229,8 +229,8 @@ class PsmStorage {
 
 		// finds the next id (1 + the largest id so far) to use
 		let findNextCategoryId = () => {
-			let max = 0;
 			let ids = Object.keys(this._categories);
+			let max = ids.length;
 
 			if (ids.length > 1) {
 				max = ids.reduce((a, b) => {

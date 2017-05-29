@@ -12,12 +12,16 @@ import {
 
 // screens
 import HomeScreen from './screens/home';
+import IncomeScreen from './screens/income';
 import SpendingsScreen from './screens/spendings';
 import SettingsScreen from './screens/settings';
 
 const stackNavigator = StackNavigator({
 	Home: {
 		screen: HomeScreen
+	},
+	Income: {
+		screen: IncomeScreen
 	},
 	SpendingHistory: {
 		screen: SpendingsScreen
@@ -29,6 +33,7 @@ const stackNavigator = StackNavigator({
 
 const PersonalSpendingManager = DrawerNavigator({
 	Home: { screen: stackNavigator },
+	Income: { screen: IncomeScreen },
 	SpendingHistory: { screen: SpendingsScreen },
 	Settings: { screen: SettingsScreen }
 })

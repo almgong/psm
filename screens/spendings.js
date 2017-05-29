@@ -11,6 +11,9 @@ import styles from '../static/styles/styles';
 // modules
 import PsmStorage from '../modules/storage';
 
+/**
+ * Spending history screen. Affords viewing expenditures in different formats.
+**/
 class SpendingsScreen extends React.Component {
 	static navigationOptions = {
  		title: 'Spending History',

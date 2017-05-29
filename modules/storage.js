@@ -120,40 +120,44 @@ class PsmStorage {
 	}
 
 	/**
-	 * Clears all local data. Great for debugging, or for security reasons.
+	 * Clears all locally persisted data.
 	 *
-	 * @param callback optional callback that will be invoked either error if any.
+	 * @param callback optional callback that will be invoked with error if any.
 	 *				(err) => {}
 	**/
 	clearData(callback) {
 		let clearCategoriesPromise = new Promise((resolve, reject) => {
-			AsyncStorage.removeItem(CATEGORIES_KEY, (err) => {
-				let res = null;
-
+			AsyncStorage.setItem(CATEGORIES_KEY, JSON.stringify({}), (err) => {
 				if (err) {
-					res = 'There was an issue with clearing category data: ' + err.message;
+					reject('There was an issue with clearing category data: ' + err.message);
 				}
 
-				// we still want future clear promises to run even if this fails
-				// Therefore, we resolve no matter what
-				resolve(res);
+				resolve(null);
 			});
 		});
 
 		let clearExpendituresPromise = new Promise((resolve, reject) => {
 			AsyncStorage.removeItem(EXPENDITURES_KEY, (err) => {
-				let res = null;
-
 				if (err) {
-					res = 'There was an issue with clearing expenditure data: ' + err.message;
+					reject('There was an issue with clearing expenditure data: ' + err.message);
 				}
 
-				resolve(res);
+				resolve(null);
 			});
 		});
 
-		this._categories = null;
-		this._expenditures = null;
+		Promise.all([clearExpendituresPromise, clearExpendituresPromise]).then(
+			(values) => {
+				if (callback) {
+					callback(null);
+					this._categories = {};
+					this._expenditures = {};
+				}
+			}, (reason) => {
+				if (callback) {
+					callback({ message: reason });
+				}
+			});
 	}
 
 	/**

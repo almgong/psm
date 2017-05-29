@@ -13,6 +13,7 @@ import {
 // screens
 import HomeScreen from './screens/home';
 import SpendingsScreen from './screens/spendings';
+import SettingsScreen from './screens/settings';
 
 const stackNavigator = StackNavigator({
 	Home: {
@@ -20,12 +21,16 @@ const stackNavigator = StackNavigator({
 	},
 	SpendingHistory: {
 		screen: SpendingsScreen
+	},
+	Settings: {
+		screen: SettingsScreen
 	}
 });
 
 const PersonalSpendingManager = DrawerNavigator({
 	Home: { screen: stackNavigator },
-	SpendingHistory: { screen: SpendingsScreen }
+	SpendingHistory: { screen: SpendingsScreen },
+	Settings: { screen: SettingsScreen }
 })
 
 AppRegistry.registerComponent('PersonalSpendingManager', 

@@ -4,6 +4,7 @@ import {
 	Text,
 	View
 } from 'react-native';
+import SimplePicker from 'react-native-simple-picker';
 
 // styles
 import styles from '../static/styles/styles';
@@ -26,13 +27,28 @@ class SpendingsScreen extends React.Component {
 		this._expenditureData = PsmStorage.getExpenditures();
 		this._categoryData = PsmStorage.getCategories();
 
+		// orderings
+		this._orderByPriceAsc = 1		// Price ASC
+	 	this._orderByPriceDsc = 2 	// Price DESC
+	 	this._orderByAlphaAsc = 3		// alphabetical by category name ASC
+	 	this._orderByAlphaDsc = 4 	// alphabetical by category name DESC
+		this._orderings = {
+			'Price Ascending': this._orderByPriceAsc,
+			'Price Descending': this._orderByPriceDsc,
+			'Alphabetical Ascending': this._orderByAlphaAsc,
+			'Alphabetical Descending': this._orderByAlphaDsc
+		};
+
 		this.date = new Date();
 
 		// try to show this month's spending data
 		this.state = {
 			period: (this.date.getMonth()+1) + '/' + (this.date.getFullYear()),	// TODO reconsider how to represent this
 			data: (this._expenditureData[this.date.getFullYear()][this.date.getMonth()+1] || {}),
-			viewType: 'text'
+			viewType: 'text',
+			orderBy: this._orderByAlphaAsc,
+			orderByTitle: 'Alphabetical Ascending',
+			orderings: Object.keys(this._orderings)
 		}
 	}
 
@@ -49,21 +65,51 @@ class SpendingsScreen extends React.Component {
 	}
 
 	// generates a textual representation of spending data
+	// allows for ordering since this shows a list of items
 	_generateTextView() {
 		let totalAmountSpent = this._getCurrentTotalSpendingAmount();
 		let averagePerDaySpent = (totalAmountSpent/(this.date.getDate())).toFixed(2);
 
 		return(
-			<ScrollView>
-				<Text style={styles.header2}>Spending history for: {this.state.period}</Text>
-				<Text style={styles.header3}>Total spent: ${totalAmountSpent}</Text>
-				<Text style={styles.header3}>
-					Average per day (as of {(this.date.getMonth()+1) + '/' + this.date.getDate()}): ${averagePerDaySpent}
-				</Text>
-				{this._generateTextPercentageView()}
-			</ScrollView>
+			<View>
+				<View>
+					<Text 
+						style={{
+							color: 'blue'
+						}}
+						onPress={() => {
+		          this.refs.orderByPicker.show();
+		        }}>Order by: {this.state.orderByTitle}
+		      </Text>
+					<SimplePicker 
+						style={{alignItems: 'center'}} 
+						ref='orderByPicker' 
+						options={this.state.orderings}
+						onSubmit={this.onOrderByPickerSubmit.bind(this)} />
+				</View>
+				<ScrollView>
+					<Text style={styles.header2}>Spending history for: {this.state.period}</Text>
+					<Text style={styles.header3}>Total spent: ${totalAmountSpent}</Text>
+					<Text style={styles.header3}>
+						Average per day (as of {(this.date.getMonth()+1) + '/' + this.date.getDate()}): ${averagePerDaySpent}
+					</Text>
+					{this._generateTextPercentageView()}
+				</ScrollView>
+			</View>
 		);
 	}
+
+	// Picker events
+	onOrderByPickerSubmit(option) {
+		if (option) {
+			this.setState({
+				orderBy: this._orderings[option],
+				orderByTitle: option
+			});
+		}
+	}
+
+	// Private
 
 	// generates a textual list of expenditures by category, and as percentages
 	_generateTextPercentageView() {
@@ -76,6 +122,8 @@ class SpendingsScreen extends React.Component {
 			categoriesWithPercents.push([key, parseFloat((amountByCategory[key]/totalAmountSpent*100).toFixed(3))]);
 		});
 
+		// order the results by the current orderBy state
+		this._orderBy(categoriesWithPercents, this.state.orderBy);
 
 		return(
 			<View style={{marginVertical: 15}}>
@@ -135,6 +183,46 @@ class SpendingsScreen extends React.Component {
 
 		return spendingsByCategory;
 	}
+
+	/**
+	 * Orders array of tuples depending on the specified parameters.
+	 * Note that this function modifies the specified array.
+	 *
+	 * @param arrayOfTuples an array of tuples to order
+	 * @param orderBy a value found in _orderBy*** to order the tuples by
+	**/
+	_orderBy(arrayOfTuples, orderBy) {
+		let compareTo;
+
+		// enumerate all possibilites, this is the easier to read
+		if (orderBy == this._orderByAlphaAsc) {
+	
+			compareTo = (a,b) => {
+				return a[0].localeCompare(b[0]);
+			};
+		} else if (orderBy == this._orderByAlphaDsc) {
+	
+			compareTo = (a,b) => {
+				return 0 - a[0].localeCompare(b[0]);
+			};
+		} else if (orderBy == this._orderByPriceAsc) {
+	
+			compareTo = (a,b) => {
+				return a[1] - b[1];
+			};
+		} else if (orderBy == this._orderByPriceDsc) {
+	
+			compareTo = (a,b) => {
+				return b[1] - a[1]
+			};
+		} else {
+			// invalid option, do nothing
+			return;
+		}
+
+		arrayOfTuples.sort(compareTo);
+	}
+
 
 	render() {
 		return (
